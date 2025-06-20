@@ -20,6 +20,7 @@ class CreateModifiersTable extends Migration
             $table->integer('min_selected');
             $table->integer('max_selected');
             $table->string('outlet_id', 15)->constrained('outlet');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
