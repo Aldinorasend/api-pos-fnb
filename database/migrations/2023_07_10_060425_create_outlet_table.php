@@ -22,6 +22,7 @@ class CreateOutletTable extends Migration
             $table->boolean('is_dinein');
             $table->boolean('is_label')->default(true);
             $table->boolean('is_kitchen');
+            $table->SoftDeletes();
             $table->timestamps();
         });
     }
