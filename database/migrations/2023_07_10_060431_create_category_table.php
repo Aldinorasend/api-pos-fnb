@@ -19,6 +19,7 @@ class CreateCategoryTable extends Migration
             $table->string('outlet_id', 15);
             $table->boolean('is_food');
             $table->foreign('outlet_id')->references('id')->on('outlet')->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
