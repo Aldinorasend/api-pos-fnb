@@ -17,6 +17,7 @@ class CreateReferralCodeLogs extends Migration
             $table->id();
             $table->foreignId("referral_code_id");
             $table->string("order_id");
+            $table->softDeletes();
             $table->timestamps();
         });
     }
