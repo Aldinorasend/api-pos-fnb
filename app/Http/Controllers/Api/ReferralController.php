@@ -22,7 +22,7 @@ class ReferralController extends Controller
                 "referral_code.quotas as quotas",
                 "referral_code.expired_date as expired_date",
                 "referral_code.discount as discount",
-                "referral_code.created_at as created_at",
+                "referral_code.created_at as created_at",  
                 DB::raw("COUNT(rcl.referral_code_id) as usaged")
             )
                 ->leftJoin("referral_code_logs as rcl", "rcl.referral_code_id", "=", "referral_code.id")
