@@ -21,6 +21,7 @@ class CreateReferralCode extends Migration
             $table->integer("discount");
             $table->integer("quotas");
             $table->boolean("is_active")->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
