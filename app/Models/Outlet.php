@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class Outlet extends Model
 {
     use HasFactory;
@@ -16,6 +15,19 @@ class Outlet extends Model
     protected $guarded = ['id'];
     public $incrementing = false;
     protected $table = 'outlet';
+
+    protected $fillable = [
+        'id',
+        'outlet_name',
+        'email',
+        'image',
+        'latitude',
+        'longitude',
+        'is_active',
+        'is_dinein',
+        'is_label',
+        'is_kitchen'
+    ];
 
     public function users()
     {

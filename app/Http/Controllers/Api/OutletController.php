@@ -91,10 +91,12 @@ class OutletController extends Controller
             $validatedData = $request->validate([
                 'outlet_name' => 'required|string|max:255',
                 'email' => 'required|email|unique:outlet',
-                'image' => 'image|mimes:jpeg,png,jpg,gif,svg', // Validasi untuk gambar
-                'is_dinein' => 'required|boolean',
-                'is_label' => 'required|boolean',
-                'is_kitchen' => 'required|boolean',
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
+                'latitude' => 'sometimes|nullable|string|max:255',
+                'longitude' => 'sometimes|nullable|string|max:255',
+                'is_dinein' => 'required|nullable|boolean',
+                'is_label' => 'required|nullable|boolean',
+                'is_kitchen' => 'required|nullable|boolean',
             ]);
 
             // Proses upload gambar jika ada
@@ -106,7 +108,9 @@ class OutletController extends Controller
             $outlet = Outlet::create([
                 'outlet_name' => $validatedData['outlet_name'],
                 'email' => $validatedData['email'],
-                'image' => $validatedData['image'] ?? null, // Menyimpan path gambar atau null jika tidak ada gambar
+                'image' => $validatedData['image'] ?? null,
+                'latitude' => $validatedData['latitude'] ?? null,
+                'longitude' => $validatedData['longitude'] ?? null,
                 'is_dinein' => $validatedData['is_dinein'],
                 'is_label' => $validatedData['is_label'],
                 'is_kitchen' => $validatedData['is_kitchen'],
@@ -186,10 +190,12 @@ class OutletController extends Controller
             $validator = Validator::make($request->all(), [
                 'outlet_name' => 'sometimes|required|string|max:255',
                 'email' => ['sometimes', 'required', 'email', Rule::unique('outlet')->ignore($id)],
-                'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'is_dinein' => 'sometimes|required|boolean',
-                'is_label' => 'sometimes|required|boolean',
-                'is_kitchen' => 'sometimes|required|boolean',
+                'image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'latitude' => 'sometimes|nullable|string|max:255',
+                'longitude' => 'sometimes|nullable|string|max:255',
+                'is_dinein' => 'sometimes|nullable|boolean',
+                'is_label' => 'sometimes|nullable|boolean',
+                'is_kitchen' => 'sometimes|nullable|boolean',
             ]);
 
             if ($validator->fails()) {
