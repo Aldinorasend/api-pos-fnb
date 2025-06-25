@@ -18,6 +18,8 @@ class CreateOutletTable extends Migration
             $table->string('outlet_name');
             $table->string('email');
             $table->string('image')->nullable();
+            $table->string('latitude', 20)->nullable();
+            $table->string('longitude', 20)->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('is_dinein');
             $table->boolean('is_label')->default(true);
