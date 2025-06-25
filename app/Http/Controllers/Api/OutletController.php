@@ -91,7 +91,9 @@ class OutletController extends Controller
             $validatedData = $request->validate([
                 'outlet_name' => 'required|string|max:255',
                 'email' => 'required|email|unique:outlet',
-                'image' => 'image|mimes:jpeg,png,jpg,gif,svg', // Validasi untuk gambar
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
+                'latitude' => 'sometimes|nullable|string|max:255',
+                'longitude' => 'sometimes|nullable|string|max:255',
                 'is_dinein' => 'required|boolean',
                 'is_label' => 'required|boolean',
                 'is_kitchen' => 'required|boolean',
@@ -187,6 +189,8 @@ class OutletController extends Controller
                 'outlet_name' => 'sometimes|required|string|max:255',
                 'email' => ['sometimes', 'required', 'email', Rule::unique('outlet')->ignore($id)],
                 'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'latitude' => 'sometimes|nullable|string|max:255',
+                'longitude' => 'sometimes|nullable|string|max:255',
                 'is_dinein' => 'sometimes|required|boolean',
                 'is_label' => 'sometimes|required|boolean',
                 'is_kitchen' => 'sometimes|required|boolean',
