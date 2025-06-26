@@ -16,7 +16,7 @@ class CreateOrderTable extends Migration
         Schema::create('order', function (Blueprint $table) {
             $table->uuid("id")->primary();
             $table->string('outlet_id' , 15);
-            $table->foreignId("customer_id")->references('id')->on('customer');            
+            $table->foreignId("customer_id")->nullable()->references('id')->on('customer');           
             $table->integer("order_subtotal")->nullable();           
             $table->integer("order_total")->nullable();
             $table->foreignId("order_payment")->references('id')->on('payments');

@@ -1166,18 +1166,43 @@ class OrderController extends Controller
 
      public function updateOrderById(Request $request, $id)
     {
-        //Log::info('Request body:', $request->all());
         try {
             $order = Order::findOrFail($id);
 
-            // Validasi customer_id atau customer_name harus ada salah satu
+            // Validasi input
             $validatedData = $request->validate([
                 'created_at' => 'required|date',
                 'customer_id' => 'nullable|exists:customer,id',
                 'customer_name' => 'nullable|string',
+                'phone_number' => 'nullable|string',
             ]);
 
-            if (!$request->customer_id && !$request->customer_name) {
+            // Jika customer_id tersedia, update customer tersebut
+            if ($order->customer_id) {
+                $customer = Customer::findOrFail($order->customer_id);
+                
+                // Update nama customer jika ada perubahan
+                if ($request->has('customer_name') && $request->customer_name != $customer->name) {
+                    $customer->update([
+                        'name' => $request->customer_name,
+                        'phone' => $request->phone_number ?? $customer->phone
+                    ]);
+                }
+                
+                $customerId = $customer->id;
+            } 
+            // Jika tidak ada customer_id, baru cari atau buat customer baru
+            else if ($request->customer_name) {
+                $phone = $request->phone_number;
+                $customer = Customer::where('name', $request->customer_name)->first();
+                if (!$customer) {
+                    $customer = Customer::create([
+                        'name' => $request->customer_name,
+                        'phone' => $phone,
+                    ]);
+                }
+                $customerId = $customer->id;
+            } else {
                 return response()->json([
                     'message' => 'Customer id or name is required',
                     'errors' => [
@@ -1187,31 +1212,17 @@ class OrderController extends Controller
                 ], 422);
             }
 
-            // Logic: jika customer_id tidak ada, cek customer_name
-            $customerId = $request->customer_id;
-            if (!$customerId && $request->customer_name) {
-                $phone = $request->phone_number;
-                if (!$phone && $order->customer) {
-                    $phone = $order->customer->phone;
-                }
-                $customer = Customer::where('name', $request->customer_name)->first();
-                if (!$customer) {
-                    // Jika customer tidak ditemukan, buat customer baru
-                    $customer = Customer::create([
-                        'name' => $request->customer_name,
-                        'phone' => $phone,
-                    ]);
-                }
-                $customerId = $customer->id;
-            }
-
             $order->update([
                 'customer_id' => $customerId,
                 'created_at' => $validatedData['created_at']
             ]);
 
             return response()->json([
-                'message' => 'Order updated successfully'
+                'message' => 'Order updated successfully',
+                'data' => [
+                    'order' => $order,
+                    'customer' => Customer::find($customerId)
+                ]
             ]);
         } catch (ValidationException $e) {
             return response()->json([
