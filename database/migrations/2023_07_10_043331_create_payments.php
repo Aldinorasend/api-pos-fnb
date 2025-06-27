@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+
 class CreatePayments extends Migration
 {
     /**
@@ -17,6 +18,8 @@ class CreatePayments extends Migration
             $table->id();
             $table->string("payment_name", 100);
             $table->string("payment_description", 255)->nullable();
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }
