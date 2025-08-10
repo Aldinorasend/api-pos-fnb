@@ -80,7 +80,7 @@ Route::group([
 
     Route::prefix("referralcode")->group(function(){
         Route::get("/", [ReferralController::class, "index"]);
-        Route::get("/verified", [ReferralController::class, "verifiedReferralCode"]);
+        Route::post("/verified", [ReferralController::class, "verifiedReferralCode"]);
         Route::post("/", [ReferralController::class, "store"]);
         Route::put("/{id}", [ReferralController::class, "update"]);
         Route::delete("/{id}", [ReferralController::class, "destroy"]);
