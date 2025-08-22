@@ -16,36 +16,6 @@ use Inertia\Inertia;
 |
 */
 
-Route::group([
-    "middleware" => ["auth:sanctum"]
-], function () {
-    Route::prefix('/')->group(function () {
-        Route::group([
-            "middleware" => ["admin"]
-        ], function(){
-            Route::get("category", [RoutesController::class, "category"]);
-            Route::get("payment", [RoutesController::class, "payment"]);
-            Route::get("manageuser", [RoutesController::class, "manageUser"]);
-            Route::get("referralcode", [RoutesController::class, "referralCode"]);
-            Route::get("discount", [RoutesController::class, "discount"]);
-            Route::get("outlet", [RoutesController::class, "outlet"]);
-            Route::get("modifier", [RoutesController::class, "modifier"]);
-            Route::get("statistics", [RoutesController::class, "statistics"]);
-        });
-
-        Route::get("/", [RoutesController::class, "index"]);
-        Route::get("order", [RoutesController::class, "order"]);
-        Route::get("product", [RoutesController::class, "product"]);
-        
-    });
+Route::get('/', function () {
+    return view('welcome');
 });
-
-Route::get('/lang/{locale}', function ($locale) {
-    if (in_array($locale, ['en', 'id'])) {
-        session(['locale' => $locale]);
-        app()->setLocale($locale);
-    }
-    return redirect()->back();
-});
-
-require __DIR__ . '/auth.php';
